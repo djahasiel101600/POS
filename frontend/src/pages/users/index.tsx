@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { usersApi } from '@/entities/user/api/usersApi'
-import type { User } from '@/shared/types'
+import type { User, UserRole } from '@/shared/types'
 import { Plus, Pencil, KeyRound } from 'lucide-react'
 
 export function UsersPage() {
   const [showForm, setShowForm] = useState(false)
   const [editing, setEditing] = useState<User | null>(null)
-  const [form, setForm] = useState({ username: '', full_name: '', role: 'cashier', password: '', is_active: true })
+  const [form, setForm] = useState<{ username: string; full_name: string; role: UserRole; password: string; is_active: boolean }>({ username: '', full_name: '', role: 'cashier' as UserRole, password: '', is_active: true })
   const [resetPwd, setResetPwd] = useState<{ userId: number; password: string } | null>(null)
   const qc = useQueryClient()
 
@@ -33,7 +33,7 @@ export function UsersPage() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Users</h1>
         <button
-          onClick={() => { setEditing(null); setForm({ username: '', full_name: '', role: 'cashier', password: '', is_active: true }); setShowForm(true) }}
+          onClick={() => { setEditing(null); setForm({ username: '', full_name: '', role: 'cashier' as UserRole, password: '', is_active: true }); setShowForm(true) }}
           className="flex items-center gap-2 bg-primary text-primary-foreground rounded-lg px-4 py-2 text-sm font-medium"
         >
           <Plus size={16} /> Add User
@@ -56,7 +56,7 @@ export function UsersPage() {
             </div>
             <div>
               <label className="text-sm font-medium">Role</label>
-              <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="w-full mt-1 border rounded-lg px-3 py-2 text-sm">
+              <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value as UserRole })} className="w-full mt-1 border rounded-lg px-3 py-2 text-sm">
                 <option value="cashier">Cashier</option>
                 <option value="manager">Manager</option>
                 <option value="admin">Admin</option>
